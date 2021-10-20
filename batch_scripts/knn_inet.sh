@@ -5,6 +5,7 @@
 #SBATCH --error=outfiles/knn_inet.out.%j
 #SBATCH --time=36:00:00
 #SBATCH --qos=high
+#SBATCH --gres=gpu:gtx1080ti:4
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=128G
 

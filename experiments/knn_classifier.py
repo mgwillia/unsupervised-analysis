@@ -4,7 +4,6 @@ Licensed under the CC BY-NC 4.0 license (https://creativecommons.org/licenses/by
 """
 import argparse
 import torch
-from datasets.color_jitter import ColorJitterDataset
 from models import *
 from datasets import *
 import torch.nn.functional as F
@@ -19,8 +18,8 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
     test_features = features['val_features']
 
     if normalize:
-        train_features = torch.nn.functional.normalize(train_features, p=2, dim=1)
-        test_features = torch.nn.functional.normalize(test_features, p=2, dim=1)
+        train_features = F.normalize(train_features, p=2, dim=1)
+        test_features = F.normalize(test_features, p=2, dim=1)
 
     train_features = train_features.numpy()
     test_features = test_features.numpy()
