@@ -52,13 +52,8 @@ def main():
     features_path = '/vulcanscratch/mgwillia/vissl/features/' + '_'.join([backbone_name, args.dataset, 'features']) + '.pth.tar'
     features = torch.load(features_path)
 
-    if 'scan' in backbone_name:
-        train_features = torch.nn.functional.normalize(features['train_features'], p=2, dim=1).numpy()
-        val_features = torch.nn.functional.normalize(features['val_features'], p=2, dim=1).numpy()
-
-    else:
-        train_features = features['train_features'].numpy()
-        val_features = features['val_features'].numpy()
+    train_features = torch.nn.functional.normalize(features['train_features'], p=2, dim=1).numpy()
+    val_features = torch.nn.functional.normalize(features['val_features'], p=2, dim=1).numpy()
 
     if args.dataset == 'imagenet':
         start_time = time.time()
