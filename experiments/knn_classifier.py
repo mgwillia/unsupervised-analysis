@@ -25,6 +25,8 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
     train_labels = labels['train_targets'].numpy()
     test_labels = labels['val_targets'].numpy()
 
+    train_features = torch.from_numpy(train_features).float().cuda().t()
+    train_labels = torch.LongTensor(train_labels).cuda()
     ###########################################################################
     # Step 2: calculate the nearest neighbor and the metrics
     top1, top5, total = 0.0, 0.0, 0
@@ -37,7 +39,7 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
             features = test_features[
                 idx : min((idx + imgs_per_chunk), num_test_images), :
             ]
-            targets = test_labels[idx : min((idx + imgs_per_chunk), num_test_images), :]
+            targets = test_labels[idx : min((idx + imgs_per_chunk), num_test_images)]#, :]
             batch_size = targets.shape[0]
             features = torch.from_numpy(features).float().cuda()
             targets = torch.LongTensor(targets).cuda()
