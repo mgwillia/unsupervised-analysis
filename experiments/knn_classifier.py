@@ -30,7 +30,7 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
     ###########################################################################
     # Step 2: calculate the nearest neighbor and the metrics
     top1, top5, total = 0.0, 0.0, 0
-    num_test_images, num_chunks = test_labels.shape[0], 1000
+    num_test_images, num_chunks = test_labels.shape[0], 100
     imgs_per_chunk = num_test_images // num_chunks
     print(f'Images per chunk: {imgs_per_chunk}')
     with torch.no_grad():
