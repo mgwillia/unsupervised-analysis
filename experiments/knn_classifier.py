@@ -81,7 +81,7 @@ def main():
     parser.add_argument('--dataset', default='imagenet', type=str, help='datset name: cub, imagenet, or something else')
     parser.add_argument('--temperature', default=0.1, type=float, help='temperature')
     parser.add_argument('--num-neighbors', default=200, type=int, help='topk for k nearest neighbors classifier')
-    parser.add_argument('--normalize', action='store_true', type=bool, help='normalize')
+    parser.add_argument('--normalize', action='store_true', help='normalize')
     args = parser.parse_args()
 
     print(f'Getting knn classifier accuracy for backbone path: {args.backbone}, dataset: {args.dataset}')
