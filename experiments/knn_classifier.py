@@ -23,7 +23,7 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
     test_features = test_features.numpy()
 
     train_labels = labels['train_targets'].numpy()
-    test_labels = labels['test_targets'].numpy()
+    test_labels = labels['val_targets'].numpy()
 
     ###########################################################################
     # Step 2: calculate the nearest neighbor and the metrics
