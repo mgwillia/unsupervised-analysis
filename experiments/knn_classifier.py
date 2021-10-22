@@ -54,6 +54,7 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
             retrieved_neighbors = torch.gather(candidates, 1, indices)
 
             retrieval_one_hot.resize_(batch_size * num_neighbors, num_classes).zero_()
+            print(retrieval_one_hot.shape, retrieved_neighbors.shape)
             retrieval_one_hot.scatter_(1, retrieved_neighbors.view(-1, 1), 1)
             distances_transform = distances.clone().div_(temperature).exp_()
             probs = torch.sum(
