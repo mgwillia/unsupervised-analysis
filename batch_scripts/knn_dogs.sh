@@ -13,8 +13,11 @@ module load cuda/11.0.3
 
 DATASET="dogs"
 BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_200" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
+NUM_NEIGHBORS=(5 10 15 20 25 30)
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
-    srun bash -c "python experiments/knn_classifier.py --backbone $backbone --dataset $DATASET --temperature 0.1 --num-neighbors 10 --normalize;"
+    for $i in ${NUM_NEIGHBORS[@]}; do
+        srun bash -c "python experiments/knn_classifier.py --backbone $backbone --dataset $DATASET --temperature 0.1 --num-neighbors $i --normalize;"
+    done
 done
