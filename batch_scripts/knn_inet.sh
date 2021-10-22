@@ -6,8 +6,8 @@
 #SBATCH --time=36:00:00
 #SBATCH --qos=high
 #SBATCH --gres=gpu:p6000:1
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=128G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
 
 module load cuda/11.0.3
 
