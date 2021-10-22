@@ -17,7 +17,7 @@ NUM_NEIGHBORS=(5 10 15 20 25 30)
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
-    for $i in ${NUM_NEIGHBORS[@]}; do
+    for i in ${NUM_NEIGHBORS[@]}; do
         srun bash -c "python experiments/knn_classifier.py --backbone $backbone --dataset $DATASET --temperature 0.1 --num-neighbors $i --normalize;"
     done
 done
