@@ -8,7 +8,6 @@ import torch.nn.functional as F
 
 
 def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, features, labels):
-    print(f"Testing with sigma: {temperature}, topk neighbors: {num_neighbors}, normalize: {normalize}")
 
     ############################################################################
     # Step 1: get train and test features
@@ -32,7 +31,6 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
     top1, top5, total = 0.0, 0.0, 0
     num_test_images, num_chunks = test_labels.shape[0], 100
     imgs_per_chunk = num_test_images // num_chunks
-    print(f'Images per chunk: {imgs_per_chunk}')
     with torch.no_grad():
         retrieval_one_hot = torch.zeros(num_neighbors, num_classes).cuda()
         for idx in range(0, num_test_images, imgs_per_chunk):
@@ -54,7 +52,6 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
             retrieved_neighbors = torch.gather(candidates, 1, indices)
 
             retrieval_one_hot.resize_(batch_size * num_neighbors, num_classes).zero_()
-            #print(retrieved_neighbors.min(), retrieved_neighbors.max())
             retrieval_one_hot.scatter_(1, retrieved_neighbors.view(-1, 1), 1)
             distances_transform = distances.clone().div_(temperature).exp_()
             probs = torch.sum(
@@ -73,8 +70,7 @@ def nearest_neighbor_test(temperature, num_neighbors, normalize, num_classes, fe
             total += targets.size(0)
     top1 = top1 * 100.0 / total
     top5 = top5 * 100.0 / total
-    print(f"Total images: {total}, Top1: {top1}, Top5: {top5}")
-    return top1, top5
+    return total, top1, top5
 
 
 def main():
@@ -88,7 +84,6 @@ def main():
     parser.add_argument('--normalize', action='store_true', help='normalize')
     args = parser.parse_args()
 
-    print(f'Getting knn classifier accuracy for backbone path: {args.backbone}, dataset: {args.dataset}')
 
     ### LOAD FEATURES ###
     features_path = '/vulcanscratch/mgwillia/vissl/features/' + '_'.join([args.backbone, args.dataset, 'features']) + '.pth.tar'
@@ -118,7 +113,8 @@ def main():
         raise ValueError(f'Invalid dataset: {args.dataset}')
 
     ### CALL KNN CLASSIFIER ###
-    nearest_neighbor_test(args.temperature, args.num_neighbors, args.normalize, num_classes, features, targets)
+    total, top1, top5 = nearest_neighbor_test(args.temperature, args.num_neighbors, args.normalize, num_classes, features, targets)
+    print(f'Backbone: {args.backbone}, Dataset: {args.dataset}, Testing with sigma: {args.temperature}, topk neighbors: {args.num_neighbors}, normalize: {args.normalize}, Total images: {total}, Top1: {top1}, Top5: {top5}')
 
 if __name__ == '__main__':
     main()

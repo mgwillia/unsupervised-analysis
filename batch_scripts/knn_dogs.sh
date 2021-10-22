@@ -13,7 +13,7 @@ module load cuda/11.0.3
 
 DATASET="dogs"
 BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_200" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
-NUM_NEIGHBORS=(5 10 15 20 25 30)
+NUM_NEIGHBORS=(5 10 15 20 25 30 35 40 45 50)
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
