@@ -90,6 +90,11 @@ def main():
 
     print(f'Getting knn classifier accuracy for backbone path: {args.backbone}, dataset: {args.dataset}')
 
+    ### LOAD FEATURES ###
+    features_path = '/vulcanscratch/mgwillia/vissl/features/' + '_'.join([args.backbone, args.dataset, 'features']) + '.pth.tar'
+    features = torch.load(features_path)
+    targets = torch.load(f'/vulcanscratch/mgwillia/vissl/features/{args.backbone}_{args.dataset}_targets.pth.tar')
+
     ### SET UP DATASETS ###
     if args.dataset == 'imagenet':
         num_classes = 1000
@@ -101,17 +106,16 @@ def main():
         num_classes = 200
     elif args.dataset == 'cars':
         num_classes = 196
+        targets['train_targets'] = targets['train_targets'] - 1
+        targets['val_targets'] = targets['val_targets'] - 1
     elif args.dataset == 'dogs':
         num_classes = 120
+        targets['train_targets'] = targets['train_targets'] - 1
+        targets['val_targets'] = targets['val_targets'] - 1
     elif args.dataset == 'flowers':
         num_classes = 102
     else:
         raise ValueError(f'Invalid dataset: {args.dataset}')
-
-    ### LOAD FEATURES ###
-    features_path = '/vulcanscratch/mgwillia/vissl/features/' + '_'.join([args.backbone, args.dataset, 'features']) + '.pth.tar'
-    features = torch.load(features_path)
-    targets = torch.load(f'/vulcanscratch/mgwillia/vissl/features/{args.backbone}_{args.dataset}_targets.pth.tar')
 
     ### CALL KNN CLASSIFIER ###
     nearest_neighbor_test(args.temperature, args.num_neighbors, args.normalize, num_classes, features, targets)
