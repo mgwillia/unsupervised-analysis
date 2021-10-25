@@ -1,18 +1,18 @@
 #!/bin/bash
 
-#SBATCH --job-name=kmeans_cub
-#SBATCH --output=outfiles/kmeans_cub.out.%j
-#SBATCH --error=outfiles/kmeans_cub.out.%j
+#SBATCH --job-name=kmeans_nabirds
+#SBATCH --output=outfiles/kmeans_nabirds.out.%j
+#SBATCH --error=outfiles/kmeans_nabirds.out.%j
 #SBATCH --time=72:00:00
 #SBATCH --partition=scavenger
 #SBATCH --account=scavenger
 #SBATCH --cpus-per-task=64
 #SBATCH --mem=128G
 
-DATASET="cub"
+DATASET="nabirds"
 BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_200" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
-    srun bash -c "python kmeans.py --backbone $backbone --dataset $DATASET --num-clusters 200;"
+    srun bash -c "python kmeans.py --backbone $backbone --dataset $DATASET --num-clusters 555;"
 done
