@@ -14,5 +14,5 @@ BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_200" "sim
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
-    srun bash -c "python kmeans.py --backbone $backbone --dataset $DATASET --num-clusters 102;"
+    srun bash -c "python experiments/kmeans.py --backbone $backbone --dataset $DATASET --num-clusters 102;"
 done
