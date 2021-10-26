@@ -21,13 +21,13 @@ def main():
 
     num_inits = 10
 
-    features_path = '/vulcanscratch/mgwillia/vissl/features/' + '_'.join([backbone_name, args.dataset, 'features']) + '.pth.tar'
+    features_path = '/vulcanscratch/mgwillia/vissl/features/' + '_'.join([backbone_name, args.dataset.replace('3k', ''), 'features']) + '.pth.tar'
     features = torch.load(features_path)
 
     train_features = torch.nn.functional.normalize(features['train_features'], p=2, dim=1).numpy()
     val_features = torch.nn.functional.normalize(features['val_features'], p=2, dim=1).numpy()
 
-    if args.dataset == 'imagenet' or args.dataset == 'imagenet_200' or args.dataset == 'imagenet_50':
+    if args.dataset == 'imagenet3k' or args.dataset == 'imagenet' or args.dataset == 'imagenet_200' or args.dataset == 'imagenet_50':
         start_time = time.time()
         kmeans = MiniBatchKMeans(n_clusters=args.num_clusters, init='k-means++', n_init=num_inits, batch_size=args.num_cores*256).fit(train_features)
         labels = kmeans.labels_
