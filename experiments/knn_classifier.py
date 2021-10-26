@@ -109,6 +109,8 @@ def main():
         targets['val_targets'] = targets['val_targets'] - 1
     elif args.dataset == 'flowers':
         num_classes = 102
+    elif args.dataset == 'nabirds':
+        num_classes = 555
     else:
         raise ValueError(f'Invalid dataset: {args.dataset}')
 
