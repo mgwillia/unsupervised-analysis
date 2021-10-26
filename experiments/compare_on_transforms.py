@@ -4,7 +4,7 @@ Licensed under the CC BY-NC 4.0 license (https://creativecommons.org/licenses/by
 """
 import argparse
 import torch
-from datasets.color_jitter import ColorJitterDataset
+from datasets import TransformsDataset
 from models import *
 from datasets import *
 import torch.nn.functional as F
@@ -14,10 +14,11 @@ def get_features_from_dataset(dataset, backbone, dim):
     features = torch.FloatTensor(len(dataset), dim)
     aug_features = torch.FloatTensor(len(dataset), dim)
 
-    dataloader = torch.utils.data.DataLoader(dataset, num_workers=8,
-            batch_size=64, pin_memory=True, drop_last=False, shuffle=False)
+    dataloader = torch.utils.data.DataLoader(dataset, num_workers=16,
+            batch_size=256, pin_memory=True, drop_last=False, shuffle=False)
 
-    print(len(dataset))
+    for param in backbone.parameters():
+        param.requires_grad = False
     ptr = 0
     with torch.no_grad():
         for _, batch in enumerate(dataloader):
@@ -68,28 +69,31 @@ def main():
         train_dataset = ImageNetSubset(f'/cfarhomes/mgwillia/scan-adaptation/Unsupervised-Classification/data/imagenet_subsets/{args.dataset}.txt', '/scratch0/mgwillia/imagenet/', split='train', transform=None)
         val_dataset = ImageNetSubset(f'/cfarhomes/mgwillia/scan-adaptation/Unsupervised-Classification/data/imagenet_subsets/{args.dataset}.txt', '/scratch0/mgwillia/imagenet/', split='val', transform=None)
     elif args.dataset == 'cub':
-        train_dataset = CUB('/fs/vulcan-datasets/CUB/CUB_200_2011/', train=True, transform=None)
-        val_dataset = CUB('/fs/vulcan-datasets/CUB/CUB_200_2011/', train=False, transform=None)
+        train_dataset = ImageNet('/scratch0/mgwillia/CUB_200_2011/', split='train', transform=None)
+        val_dataset = ImageNet('/scratch0/mgwillia/CUB_200_2011/', split='val', transform=None)
     elif args.dataset == 'cars':
-        train_dataset = ImageNet('/vulcanscratch/mgwillia/StanfordCars/', split='train', transform=None)
-        val_dataset = ImageNet('/vulcanscratch/mgwillia/StanfordCars/', split='val', transform=None)
+        train_dataset = ImageNet('/scratch0/mgwillia/StanfordCars/', split='train', transform=None)
+        val_dataset = ImageNet('/scratch0/mgwillia/StanfordCars/', split='val', transform=None)
     elif args.dataset == 'dogs':
-        train_dataset = StanfordDogs('/scratch0/mgwillia/StanfordDogs/', train=True, transform=None)
-        val_dataset = StanfordDogs('/scratch0/mgwillia/StanfordDogs/', train=False, transform=None)
+        train_dataset = ImageNet('/scratch0/mgwillia/StanfordDogs/', split='train', transform=None)
+        val_dataset = ImageNet('/scratch0/mgwillia/StanfordDogs/', split='val', transform=None)
     elif args.dataset == 'flowers':
-        train_dataset = OxfordFlowers('/scratch0/mgwillia/OxfordFlowers/', train=True, transform=None)
-        val_dataset = OxfordFlowers('/scratch0/mgwillia/OxfordFlowers/', train=False, transform=None)
+        train_dataset = ImageNet('/scratch0/mgwillia/OxfordFlowers/', split='train', transform=None)
+        val_dataset = ImageNet('/scratch0/mgwillia/OxfordFlowers/', split='val', transform=None)
+    elif args.dataset == 'aircraft':
+        train_dataset = ImageNet('/scratch0/mgwillia/fgvc-aircraft-2013b/', split='train', transform=None)
+        val_dataset = ImageNet('/scratch0/mgwillia/fgvc-aircraft-2013b/', split='val', transform=None)
+    elif args.dataset == 'nabirds':
+        train_dataset = ImageNet('/scratch0/mgwillia/nabirds/', split='train', transform=None)
+        val_dataset = ImageNet('/scratch0/mgwillia/nabirds/', split='val', transform=None)
     else:
         raise ValueError(f'Invalid dataset: {args.dataset}')
     
-    if args.transform == 'blur':
-        train_dataset = BlurDataset(train_dataset)
-        val_dataset = BlurDataset(val_dataset)
-    elif args.transform == 'color':
-        train_dataset = ColorJitterDataset(train_dataset)
-        val_dataset = ColorJitterDataset(val_dataset)
-    else:
+    if args.transform not in ['image_jitter', 'patch_jitter', 'image_blur', 'patch_blur', 'horizontal_flip', 'vertical_flip', 'rotate']:
         raise ValueError(f'Invalid transform: {args.transform}')
+    else:
+        train_dataset = TransformsDataset(train_dataset, args.transform)
+        val_dataset = TransformsDataset(val_dataset, args.transform)
 
     ### SET UP MODEL ###
     model = resnet50x1()
