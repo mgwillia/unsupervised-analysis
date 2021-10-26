@@ -97,6 +97,8 @@ def main():
         num_classes = 50
     elif args.dataset == 'imagenet_200':
          num_classes = 200
+    elif args.dataset == 'aircraft':
+        num_classes = 100
     elif args.dataset == 'cub':
         num_classes = 200
     elif args.dataset == 'cars':
