@@ -10,7 +10,7 @@
 #SBATCH --mem=128G
 
 DATASET="imagenet3k"
-BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_800" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
+BACKBONES=("swav_r50_800")
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
