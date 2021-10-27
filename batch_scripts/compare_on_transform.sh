@@ -19,7 +19,7 @@ srun bash -c "hostname;"
 for dataset in ${DATASETS[@]}; do
     for backbone in ${BACKBONES[@]}; do
         for transform in ${TRANSFORMS[@]}; do
-            srun bash -c "python compare_on_transforms.py --dataset $dataset --backbone $backbone --transform $transform;"
+            srun bash -c "python experiments/compare_on_transforms.py --dataset $dataset --backbone $backbone --transform $transform;"
         done
     done
 done
