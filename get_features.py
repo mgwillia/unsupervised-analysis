@@ -90,7 +90,7 @@ def main():
     model = resnet50x1()
     
     backbone = model['backbone']
-    saved_model = torch.load(args.backbone + '.pth.tar', map_location='cpu')
+    saved_model = torch.load('/vulcanscratch/mgwillia/unsupervised-classification/backbones/' + args.backbone + '.pth.tar', map_location='cpu')
     missing = backbone.load_state_dict(saved_model, strict=False)
     print(missing)
     backbone = torch.nn.DataParallel(backbone)
