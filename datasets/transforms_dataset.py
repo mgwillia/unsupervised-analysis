@@ -31,6 +31,7 @@ class TransformsDataset(Dataset):
        
         dataset.transform = None
         self.dataset = dataset
+        self.blur_radius = torch.empty(len(self.dataset)).uniform_(0.1, 2.0)
         self.fn_idxs = []
         for _ in range(len(self.dataset)):
             self.fn_idxs.append(torch.randperm(4))

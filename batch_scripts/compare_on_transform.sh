@@ -13,7 +13,8 @@ module load cuda/11.0.3
 
 DATASETS=("aircraft" "cars" "cub" "dogs" "flowers" "nabirds" "imagenet")
 BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_200" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
-TRANSFORMS=("image_jitter" "patch_jitter" "image_blur" "patch_blur" "horizontal_flip" "vertical_flip" "rotate")
+#TRANSFORMS=("image_jitter" "image_blur" "horizontal_flip" "vertical_flip" "rotate")
+TRANSFORMS=("image_blur")
 
 srun bash -c "hostname;"
 for dataset in ${DATASETS[@]}; do
