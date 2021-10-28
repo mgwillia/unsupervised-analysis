@@ -36,7 +36,7 @@ class TransformsDataset(Dataset):
             self.fn_idxs.append(torch.randperm(4))
         self.bcs_factors = torch.empty((len(self.dataset), 3)).uniform_(0.6, 1.4)
         self.hue_factors = torch.empty(len(self.dataset)).uniform_(-0.1, 0.1)
-        self.patch_coords = torch.randint(0, 168 (len(self.dataset), 2))
+        self.patch_coords = torch.randint(0, 168, (len(self.dataset), 2))
 
     def __len__(self):
         return len(self.dataset)
