@@ -7,8 +7,8 @@
 #SBATCH --partition=scavenger
 #SBATCH --account=scavenger
 #SBATCH --gres=gpu:gtx1080ti:1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=32G
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=16G
 
 module load cuda/11.0.3
 

@@ -13,7 +13,7 @@ def get_features_from_dataset(dataset, backbone, dim):
     features = torch.FloatTensor(len(dataset), dim)
     targets = torch.LongTensor(len(dataset))
 
-    dataloader = torch.utils.data.DataLoader(dataset, num_workers=8,
+    dataloader = torch.utils.data.DataLoader(dataset, num_workers=2,
             batch_size=64, pin_memory=True,
             drop_last=False, shuffle=False)
 
