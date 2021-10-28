@@ -1,11 +1,12 @@
 #!/bin/bash
 
-#SBATCH --job-name=knn_inet
-#SBATCH --output=outfiles/knn_inet.out.%j
-#SBATCH --error=outfiles/knn_inet.out.%j
-#SBATCH --time=36:00:00
-#SBATCH --qos=high
-#SBATCH --gres=gpu:p6000:1
+#SBATCH --job-name=feat_inet
+#SBATCH --output=outfiles/feat_inet.out.%j
+#SBATCH --error=outfiles/feat_inet.out.%j
+#SBATCH --time=72:00:00
+#SBATCH --partition=scavenger
+#SBATCH --account=scavenger
+#SBATCH --gres=gpu:gtx1080ti:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 
@@ -17,5 +18,5 @@ BACKBONES=("simclr_r50_100" "simclr_r50_200" "simclr_r50_400" "simclr_r50_800" "
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
-    srun bash -c "python experiments/knn_classifier.py --backbone $backbone --dataset $DATASET --temperature 0.1 --num-neighbors 200 --normalize;"
+    srun bash -c "python get_features.py --backbone $backbone --dataset $DATASET;"
 done
