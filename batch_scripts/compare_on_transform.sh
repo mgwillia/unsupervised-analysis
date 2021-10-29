@@ -4,9 +4,10 @@
 #SBATCH --output=outfiles/compare_transforms.out.%j
 #SBATCH --error=outfiles/compare_transforms.out.%j
 #SBATCH --time=36:00:00
-#SBATCH --qos=high
+#SBATCH --account=scavenger
+#SBATCH --partition=scavenger
 #SBATCH --gres=gpu:gtx1080ti:4
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 
 module load cuda/11.0.3
