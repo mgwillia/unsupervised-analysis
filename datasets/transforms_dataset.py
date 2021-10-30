@@ -20,9 +20,8 @@ class TransformsDataset(Dataset):
         self.crop = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224)])
-        self.to_tensor = transforms.Compose([
-            transforms.ToTensor(), 
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+        self.to_tensor = transforms.ToTensor()
+        self.normalize = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         self.transform_name = transform_name
 
         self.horizontal_flip = transforms.RandomHorizontalFlip(1.0)
@@ -62,21 +61,6 @@ class TransformsDataset(Dataset):
                     output['aug_image'] = TF.adjust_saturation(output['aug_image'], float(s))
                 elif fn_id == 3:
                     output['aug_image'] = TF.adjust_hue(output['aug_image'], float(h))
-        elif self.transform_name == 'patch_jitter':
-            x, y = self.patch_coords[index]
-            width, height =  56, 56
-            fn_idx = self.fn_idxs[index]
-            b, c, s = self.bcs_factors[index]
-            h = self.hue_factors[index]
-            for fn_id in fn_idx:
-                if fn_id == 0:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_brightness(output['aug_image'][x:x+width,y:y+height], float(b))
-                elif fn_id == 1:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_contrast(output['aug_image'][x:x+width,y:y+height], float(c))
-                elif fn_id == 2:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_saturation(output['aug_image'][x:x+width,y:y+height], float(s))
-                elif fn_id == 3:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_hue(output['aug_image'][x:x+width,y:y+height], float(h)) 
         elif self.transform_name == 'image_blur':
             output['aug_image'] = output['aug_image'].filter(
                 ImageFilter.GaussianBlur(
@@ -84,6 +68,7 @@ class TransformsDataset(Dataset):
                 )
             )
         elif self.transform_name == 'patch_blur':
+            print('shape:', output['aug_image'].shape)
             x, y = self.patch_coords[index]
             width, height =  56, 56
             output['aug_image'][x:x+width,y:y+height] = output['aug_image'][x:x+width,y:y+height].filter(
@@ -100,5 +85,25 @@ class TransformsDataset(Dataset):
 
         output['image'] = self.to_tensor(output['image'])
         output['aug_image'] = self.to_tensor(output['aug_image'])
+
+        if self.transform_name == 'patch_jitter':
+            print('shape:', output['aug_image'].shape)
+            x, y = self.patch_coords[index]
+            width, height =  56, 56
+            fn_idx = self.fn_idxs[index]
+            b, c, s = self.bcs_factors[index]
+            h = self.hue_factors[index]
+            for fn_id in fn_idx:
+                if fn_id == 0:
+                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_brightness(output['aug_image'][x:x+width,y:y+height], float(b))
+                elif fn_id == 1:
+                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_contrast(output['aug_image'][x:x+width,y:y+height], float(c))
+                elif fn_id == 2:
+                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_saturation(output['aug_image'][x:x+width,y:y+height], float(s))
+                elif fn_id == 3:
+                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_hue(output['aug_image'][x:x+width,y:y+height], float(h))
+        
+        output['image'] = self.normalize(output['image'])
+        output['aug_image'] = self.normalize(output['aug_image'])
         
         return output

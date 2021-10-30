@@ -12,10 +12,12 @@
 
 module load cuda/11.0.3
 
+#TODO: dcv2 had seg fault on imagenet for image_jitter, needs to run again
+#TODO: need to run all for simclr_r50_800
+
 DATASETS=("aircraft" "cars" "cub" "dogs" "flowers" "nabirds" "imagenet")
-BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_200" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
-#TRANSFORMS=("image_jitter" "image_blur" "horizontal_flip" "vertical_flip" "rotate")
-TRANSFORMS=("image_blur")
+BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_800" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
+TRANSFORMS=("image_jitter" "image_blur" "horizontal_flip" "vertical_flip" "rotate")
 
 if [ ! -d /scratch0/mgwillia/fgvc-aircraft-2013b ]; then
     srun bash -c "echo 'aircraft not found on scratch!'"
@@ -52,6 +54,25 @@ if [ ! -d /scratch0/mgwillia/nabirds ]; then
     srun bash -c "mkdir -p /scratch0/mgwillia"
     srun bash -c "./msrsync -p 16 /vulcanscratch/mgwillia/nabirds /scratch0/mgwillia/"
 fi
+            
+srun bash -c "python compare_on_transforms.py --dataset imagenet --backbone dcv2_r50_800 --transform image_jitter;"
+
+DATASETS=("aircraft" "cars" "cub" "dogs" "flowers" "nabirds" "imagenet")
+BACKBONES=("simclr_r50_100" "simclr_r50_400" "simclr_r50_800" "simclr_r50_1000")
+TRANSFORMS=("image_jitter" "image_blur" "horizontal_flip" "vertical_flip" "rotate")
+
+srun bash -c "hostname;"
+for dataset in ${DATASETS[@]}; do
+    for backbone in ${BACKBONES[@]}; do
+        for transform in ${TRANSFORMS[@]}; do
+            srun bash -c "python compare_on_transforms.py --dataset $dataset --backbone $backbone --transform $transform;"
+        done
+    done
+done
+
+DATASETS=("cars")
+BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_800" "simsiam_r50_100" "supervised_r50" "swav_r50_800")
+TRANSFORMS=("image_jitter" "image_blur" "horizontal_flip" "vertical_flip" "rotate")
 
 srun bash -c "hostname;"
 for dataset in ${DATASETS[@]}; do
