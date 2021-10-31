@@ -45,7 +45,7 @@ def main():
 
     for layer_name, representation_a in features_a.items():
         representation_b = features_b[layer_name]
-        cur_CKA = cuda_cka.linear_CKA(representation_a, representation_b)
+        cur_CKA = cuda_cka.linear_CKA(representation_a.cuda(), representation_b.cuda())
         print(f'Dataset: {args.dataset}, Backbone_A: {args.backbone_a}, Backbone_B: {args.backbone_b}, Layer: {layer_name}, Linear_CKA: {cur_CKA}', flush=True)
 
 
