@@ -5,7 +5,7 @@
 #SBATCH --error=outfiles/calc_cka.out.%j
 #SBATCH --time=36:00:00
 #SBATCH --qos=high
-#SBATCH --gres=gpu:gtx1080ti:1
+#SBATCH --gres=gpu:p6000:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 
