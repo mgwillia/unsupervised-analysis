@@ -33,7 +33,7 @@ def get_features_from_dataset(dataset, model):
             cur_targets = batch['target'].cuda(non_blocking=True)
             output = model(images)
             
-            b = output.size(0)
+            b = ['conv1'].shape[0]
             
             assert(b + ptr <= len(dataset))
 
