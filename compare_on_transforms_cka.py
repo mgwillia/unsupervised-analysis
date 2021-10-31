@@ -132,7 +132,7 @@ def main():
     device = torch.device('cuda')
     cuda_cka = CudaCKA(device)
 
-    cur_CKA = cuda_cka.linear_CKA(val_features, val_aug_features)
+    cur_CKA = cuda_cka.linear_CKA(val_features[::5], val_aug_features[::5])
 
     print(f'Dataset: {args.dataset}, Transform: {args.transform}, Backbone: {args.backbone}, Linear_CKA: {cur_CKA}', flush=True)
 
