@@ -36,12 +36,6 @@ def get_features_from_dataset(dataset, model):
             b = output['conv1'].shape[0]
             
             assert(b + ptr <= len(dataset))
-
-            print(output['conv1'].shape)
-            print(output['res2'].shape)
-            print(output['res3'].shape)
-            print(output['res4'].shape)
-            print(output['res5'].shape)
             
             features_map['conv1'][ptr:ptr+b].copy_(output['conv1'].detach())
             features_map['res2'][ptr:ptr+b].copy_(output['res2'].detach())
