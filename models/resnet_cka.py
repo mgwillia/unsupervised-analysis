@@ -92,7 +92,11 @@ class ResNet(nn.Module):
                                        dilate=replace_stride_with_dilation[1])
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.avgpool1 = nn.AvgPool2d((10, 10), 10, 4)
+        self.avgpool2 = nn.AvgPool2d((16, 16), 8, 0)
+        self.avgpool3 = nn.AvgPool2d((13, 13), 5, 0)
+        self.avgpool4 = nn.AvgPool2d((8, 8), 3, 0)
+        self.avgpool5 = nn.AvgPool2d((6, 6), 1, 0)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -139,17 +143,17 @@ class ResNet(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        out['conv1'] = torch.flatten(self.avgpool(x), start_dim=1)
+        out['conv1'] = torch.flatten(self.avgpool1(x), start_dim=1)
         x = self.maxpool(x)
 
         x = self.layer1(x)
-        out['res2'] = torch.flatten(self.avgpool(x), start_dim=1)
+        out['res2'] = torch.flatten(self.avgpool2(x), start_dim=1)
         x = self.layer2(x)
-        out['res3'] = torch.flatten(self.avgpool(x), start_dim=1)
+        out['res3'] = torch.flatten(self.avgpool3(x), start_dim=1)
         x = self.layer3(x)
-        out['res4'] = torch.flatten(self.avgpool(x), start_dim=1)
+        out['res4'] = torch.flatten(self.avgpool4(x), start_dim=1)
         x = self.layer4(x)
-        out['res5'] = torch.flatten(self.avgpool(x), start_dim=1)
+        out['res5'] = torch.flatten(self.avgpool5(x), start_dim=1)
 
         return out
 

@@ -11,11 +11,11 @@ from torchvision import transforms
 
 def get_features_from_dataset(dataset, model):
     features_map = {
-        'conv1': torch.FloatTensor(len(dataset), 2048),
-        'res2': torch.FloatTensor(len(dataset), 2048),
-        'res3': torch.FloatTensor(len(dataset), 2048),
-        'res4': torch.FloatTensor(len(dataset), 2048),
-        'res5': torch.FloatTensor(len(dataset), 2048)
+        'conv1': torch.FloatTensor(len(dataset), 9216),
+        'res2': torch.FloatTensor(len(dataset), 9216),
+        'res3': torch.FloatTensor(len(dataset), 8192),
+        'res4': torch.FloatTensor(len(dataset), 9216),
+        'res5': torch.FloatTensor(len(dataset), 8192)
     }
     targets = torch.LongTensor(len(dataset))
 

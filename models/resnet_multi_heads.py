@@ -134,7 +134,6 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])
 
-                                       
         self.avgpool1 = nn.AvgPool2d((10, 10), 10, 4)
         self.avgpool2 = nn.AvgPool2d((16, 16), 8, 0)
         self.avgpool3 = nn.AvgPool2d((13, 13), 5, 0)
