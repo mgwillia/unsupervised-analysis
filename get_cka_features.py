@@ -106,7 +106,7 @@ def main():
     model.cuda()
     model.eval()
 
-    features = get_features_from_dataset(val_dataset, model)
+    features, _ = get_features_from_dataset(val_dataset, model)
     torch.save(features, '/vulcanscratch/mgwillia/vissl/cka_features/' + '_'.join([args.backbone, args.dataset, 'features']) + '.pth.tar')
 
 
