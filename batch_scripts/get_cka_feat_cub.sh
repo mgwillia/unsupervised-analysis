@@ -22,5 +22,5 @@ fi
 
 srun bash -c "hostname;"
 for backbone in ${BACKBONES[@]}; do
-    srun bash -c "python get_features.py --backbone $backbone --dataset $DATASET;"
+    srun bash -c "python get_cka_features.py --backbone $backbone --dataset $DATASET;"
 done
