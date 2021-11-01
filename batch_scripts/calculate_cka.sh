@@ -16,8 +16,7 @@ BACKBONES=("btwins_r50_1000" "dcv2_r50_800" "moco_r50_800" "simclr_r50_800" "sim
 
 srun bash -c "hostname;"
 for dataset in ${DATASETS[@]}; do
-        for backbone in ${BACKBONES[@]}; do
-            srun bash -c "python experiments/calculate_cka.py --backbone-a supervised_r50 --backbone-b $backbone --dataset $dataset;"
-        done
+    for backbone in ${BACKBONES[@]}; do
+        srun bash -c "python experiments/calculate_cka.py --backbone-a supervised_r50 --backbone-b $backbone --dataset $dataset;"
     done
 done
