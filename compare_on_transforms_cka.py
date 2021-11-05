@@ -110,7 +110,7 @@ def main():
     else:
         raise ValueError(f'Invalid dataset: {args.dataset}')
     
-    if args.transform not in ['image_jitter', 'patch_jitter', 'image_blur', 'patch_blur', 'horizontal_flip', 'vertical_flip', 'rotate']:
+    if args.transform not in ['image_jitter', 'jitter_blur', 'both_flip', 'patch_jitter', 'image_blur', 'patch_blur', 'horizontal_flip', 'vertical_flip', 'rotate']:
         raise ValueError(f'Invalid transform: {args.transform}')
     else:
         train_dataset = TransformsDataset(train_dataset, args.transform)
