@@ -12,7 +12,7 @@
 module load cuda/11.0.3
 
 DATASETS=("imagenet")
-BACKBONES=("supervised_r50" "dcv2_r50_400" "dcv2_r50_400_special" "swav_r50_400" "swav_r50_400_lesscrop" "swav_r50_400_smallbatch")
+BACKBONES=("supervised_r50" "dcv2_r50_400" "dcv2_r50_800" "swav_r50_400" "swav_r50_400_lesscrop" "swav_r50_400_smallbatch")
 
 srun bash -c "hostname;"
 for dataset in ${DATASETS[@]}; do
