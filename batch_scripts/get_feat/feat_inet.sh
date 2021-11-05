@@ -3,12 +3,11 @@
 #SBATCH --job-name=feat_inet
 #SBATCH --output=outfiles/feat_inet.out.%j
 #SBATCH --error=outfiles/feat_inet.out.%j
-#SBATCH --time=72:00:00
-#SBATCH --partition=scavenger
-#SBATCH --account=scavenger
-#SBATCH --gres=gpu:gtx1080ti:1
-#SBATCH --cpus-per-task=2
-#SBATCH --mem=16G
+#SBATCH --time=36:00:00
+#SBATCH --qos=high
+#SBATCH --gres=gpu:gtx1080ti:4
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
 
 module load cuda/11.0.3
 
