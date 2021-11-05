@@ -115,13 +115,13 @@ class TransformsDataset(Dataset):
             h = self.hue_factors[index]
             for fn_id in fn_idx:
                 if fn_id == 0:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_brightness(output['aug_image'][x:x+width,y:y+height], float(b))
+                    output['aug_image'][:,x:x+width,y:y+height] = TF.adjust_brightness(output['aug_image'][:,x:x+width,y:y+height], float(b))
                 elif fn_id == 1:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_contrast(output['aug_image'][x:x+width,y:y+height], float(c))
+                    output['aug_image'][:,x:x+width,y:y+height] = TF.adjust_contrast(output['aug_image'][:,x:x+width,y:y+height], float(c))
                 elif fn_id == 2:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_saturation(output['aug_image'][x:x+width,y:y+height], float(s))
+                    output['aug_image'][:,x:x+width,y:y+height] = TF.adjust_saturation(output['aug_image'][:,x:x+width,y:y+height], float(s))
                 elif fn_id == 3:
-                    output['aug_image'][x:x+width,y:y+height] = TF.adjust_hue(output['aug_image'][x:x+width,y:y+height], float(h))
+                    output['aug_image'][:,x:x+width,y:y+height] = TF.adjust_hue(output['aug_image'][:,x:x+width,y:y+height], float(h))
         
         output['image'] = self.normalize(output['image'])
         output['aug_image'] = self.normalize(output['aug_image'])
