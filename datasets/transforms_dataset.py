@@ -107,7 +107,7 @@ class TransformsDataset(Dataset):
         output['aug_image'] = self.to_tensor(output['aug_image'])
 
         if self.transform_name == 'patch_jitter':
-            print('shape:', output['aug_image'].shape)
+            print('shape:', output['aug_image'].shape, flush=True)
             x, y = self.patch_coords[index]
             width, height =  56, 56
             fn_idx = self.fn_idxs[index]
