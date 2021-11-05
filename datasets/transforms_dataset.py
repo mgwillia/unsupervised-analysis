@@ -82,6 +82,26 @@ class TransformsDataset(Dataset):
             output['aug_image'] = self.vertical_flip(output['aug_image'])
         elif self.transform_name == 'rotate':
             output['aug_image'] = self.rotate(output['aug_image'])
+        elif self.transform_name == 'both_flip':
+            output['aug_image'] = self.horizontal_flip(self.vertical_flip(output['aug_image']))
+        elif self.transform_name == 'jitter_blur':
+            fn_idx = self.fn_idxs[index]
+            b, c, s = self.bcs_factors[index]
+            h = self.hue_factors[index]
+            for fn_id in fn_idx:
+                if fn_id == 0:
+                    output['aug_image'] = TF.adjust_brightness(output['aug_image'], float(b))
+                elif fn_id == 1:
+                    output['aug_image'] = TF.adjust_contrast(output['aug_image'], float(c))
+                elif fn_id == 2:
+                    output['aug_image'] = TF.adjust_saturation(output['aug_image'], float(s))
+                elif fn_id == 3:
+                    output['aug_image'] = TF.adjust_hue(output['aug_image'], float(h))
+            output['aug_image'] = output['aug_image'].filter(
+                ImageFilter.GaussianBlur(
+                    radius=self.blur_radius[index]
+                )
+            )
 
         output['image'] = self.to_tensor(output['image'])
         output['aug_image'] = self.to_tensor(output['aug_image'])
