@@ -103,12 +103,12 @@ def main():
         num_classes = 200
     elif args.dataset == 'cars':
         num_classes = 196
-        targets['train_targets'] = targets['train_targets'] - 1
-        targets['val_targets'] = targets['val_targets'] - 1
+        #targets['train_targets'] = targets['train_targets'] - 1
+        #targets['val_targets'] = targets['val_targets'] - 1
     elif args.dataset == 'dogs':
         num_classes = 120
-        targets['train_targets'] = targets['train_targets'] - 1
-        targets['val_targets'] = targets['val_targets'] - 1
+        #targets['train_targets'] = targets['train_targets'] - 1
+        #targets['val_targets'] = targets['val_targets'] - 1
     elif args.dataset == 'flowers':
         num_classes = 102
     elif args.dataset == 'nabirds':
